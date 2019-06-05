@@ -1,0 +1,42 @@
+{% extends "main.html" %}
+{% block content %}
+{% include "header.html" %}
+
+    <div class="row divider grey">
+        <div class="col-md-12"></div>
+    </div>
+    <div class="row banner hospital">
+        <div class="col-md-11 col-md-offset-1 padding-none">
+            <h1>{{ hospital.name }}</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 col-md-offset-1 padding-top">
+            <form action="{{ url_for('edit_hospital', hospital_id = hospital.id)}}" method = "post">
+                <div class="form-group">
+					<label for="name">Name:</label>
+					<input type ="text" maxlength="50" class="form-control" name="name" value="{{ hospital.name }}">
+
+					<label for="insurance">Accepted Insurances:</label>
+					<input class="form-control" maxlength="100" name="insurance" value="{{ hospital.accepted_insurance }}">
+                    
+                    <label for="address">Address:</label>
+					<input class="form-control" maxlength="200" name="address" value="{{ hospital.address }}">
+                    
+                    <label for="phone">Phone:</label>
+					<input class="form-control" maxlength="50" name="phone" value="{{ hospital.phone }}">
+                    
+                    <button class="btn btn-default btn-extra-margin" id="submit" type="submit">
+                        <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>Save
+                    </button>
+                    <a href = "{{ url_for('show_conditions', hospital_id = hospital.id) }}">
+                        <button class="btn btn-default btn-extra-margin delete" type="button">
+                            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>Cancel
+                        </button>
+                    </a>                 
+				</div>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,127 @@
+{% extends "main.html" %}
+{% block content %}
+{% include "header.html" %}
+	
+	<div class="row divider grey">
+		<div class="col-md-12"></div>
+	</div>
+	<div class="row banner hospital">
+		<div class="col-md-11 col-md-offset-1 padding-none">
+			<h1>{{ hospital.name }}
+			<figure class="creator">
+				<img src="{{ creator.picture }}">
+				<figcaption>{{ creator.name }}</figcaption>
+			</figure>
+			</h1>
+		</div>
+	</div>
+	<div class="row padding-top padding-bottom">
+		<div class="col-md-1"></div>
+		<div class="col-md-11 padding-none"></div>
+		<div class="col-md-7"></div>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			{% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <ul>
+                    {% for message in messages %}
+                        <li><strong>{{ message }}</strong></li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+			{% endwith %}
+		</div>
+	</div>
+    <div class="row">
+        <h3>Address:</h3>
+        <p>{{ hospital.address }}</p>
+    </div>
+    <div class="row">
+        <h3>Phone:</h3>
+        <p>{{ hospital.phone }}</p>
+    </div>
+    <div class="row">
+        <h3>Accepted Insurances</h3>
+        <p>{{ hospital.accepted_insurance }}</p>
+    </div>
+    <div>
+	   {% if items != [] %}	
+            <div class="row">
+                <div class="col-lg-3">
+                    <h2>Pharmacy</h2>
+					{% for condition in conditions %}
+						{% if condition.type == 'Pharmacy' %}
+							<div class="condition">
+								<h3>{{ condition.name }}</h3>
+                                <h4>Cause:</h4>
+                                <p>{{ condition.cause }}</p>
+                                <h4>Sympton:</h4>
+                                <p>{{ condition.sympton }}</p>
+                                <h4>Cure:</h4>
+                                <p>{{ condition.cure }}</p>
+                                <h4>Cost:</h4>
+								<p class="condition-cost">{{ condition.cost }}</p>	
+							</div>
+						{% endif %}
+					{% endfor %}
+			     </div>
+			 <div class="col-lg-3">			
+                 <h2>Psychiatric</h2>
+                 {% for condition in conditions %}
+                    {% if condition.type == 'Psychiatric' %}
+                        <div class="condition">
+                            <h3>{{ condition.name }}</h3>
+                            <h4>Cause:</h4>
+                            <p>{{ condition.cause }}</p>
+                            <h4>Sympton:</h4>
+                            <p>{{ condition.sympton }}</p>
+                            <h4>Cure:</h4>
+                            <p>{{ condition.cure }}</p>
+                            <h4>Cost:</h4>
+                            <p class="condition-cost">{{ condition.cost }}</p>	
+                        </div>
+                    {% endif %}
+                {% endfor %}
+			</div>
+			<div class="col-lg-3">
+				<h2>Clinics</h2>
+                {% for condition in conditions %}
+                    {% if condition.type == 'Clinics' %}
+                        <div class="condition">
+                            <h3>{{ condition.name }}</h3>
+                            <h4>Cause:</h4>
+                            <p>{{ condition.cause }}</p>
+                            <h4>Sympton:</h4>
+                            <p>{{ condition.sympton }}</p>
+                            <h4>Cure:</h4>
+                            <p>{{ condition.cure }}</p>
+                            <h4>Cost:</h4>
+                            <p class="condition-cost">{{ condition.cost }}</p>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+            <div class="col-lg-3">
+				<h2>Surgical</h2>
+				{% for condition in conditions %}
+				    {% if condition.type == 'Surgical' %}
+                        <div class="condition">
+                            <h3>{{ condition.name }}</h3>
+                            <h4>Cause:</h4>
+                            <p>{{ condition.cause }}</p>
+                            <h4>Sympton:</h4>
+                            <p>{{ condition.sympton }}</p>
+                            <h4>Cure:</h4>
+                            <p>{{ condition.cure }}</p>
+                            <h4>Cost:</h4>
+                            <p class="condition-cost">{{ condition.cost }}</p>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+			 </div>
+		  </div>
+	   {% endif %}
+    </div>
+
+{% endblock %}

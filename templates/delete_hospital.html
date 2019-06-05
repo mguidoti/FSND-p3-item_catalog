@@ -1,0 +1,18 @@
+{% extends "main.html" %}
+{% block content %}
+{% include "header.html" %}
+    
+    <h2>Are you sure you want to delete {{ hospital.name }}?</h2>
+
+    <form action="#" method = 'post'>
+            <button class="btn btn-default delete" id="submit" type="submit">
+                <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>Delete
+            </button>
+        <a href = "{{ url_for('show_conditions', hospital_id = hospital.id) }}">    
+            <button class="btn btn-default delete" id="cancel" type="button" >
+                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>Cancel
+            </button>
+        </a>
+    </form>
+    
+{% endblock %}

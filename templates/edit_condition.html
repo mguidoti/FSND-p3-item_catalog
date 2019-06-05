@@ -1,0 +1,69 @@
+{% extends "main.html" %}
+{% block content %}
+{% include "header.html" %}
+
+	<div class="row divider grey">
+		<div class="col-md-12"></div>
+	</div>
+	<div class="row banner hospital">
+        <div class="col-md-1"></div>
+		<div class="col-md-11 padding-none">
+			<h1>Edit Condition</h1>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-6 col-md-offset-1 padding-top">
+			<form action="#" method = "post">
+				<div class="form-group">
+					<label for="name">Name:</label>
+					<input type ="text" maxlength="100" class="form-control" name="name" value="{{ condition.name }}">
+                    
+                    <label for="cause">Cause:</label>
+					<input class="form-control" maxlength="250" name="cause" value="{{ condition.cause }}">
+                    
+                    <label for="sympton">Sympton:</label>
+					<input class="form-control" maxlength="250" name="sympton" value="{{ condition.sympton }}">
+                    
+                    <label for="cure">Cure:</label>
+					<textarea class="form-control" maxlength="250" rows="3" name="cure">{{ condition.cure }}</textarea>
+
+					<label for="cost">Cost:</label>
+					<div class="input-group">
+						<div class="input-group-addon">$</div>
+						<input type ="text" maxlength="10" class="form-control" name="cost" value="{{ condition.cost }}">
+					</div>
+					<label for="type">Type:</label>
+					<div class="radio">
+					  <label>
+					    <input type="radio" name="type" id="type1" value="Pharmacy" {% if condition.type == 'Pharmacy'%}checked{%endif%}>Pharmacy
+					  </label>
+					</div>
+					<div class="radio">
+					  <label>
+					    <input type="radio" name="type" id="type2" value="Psychiatric" {% if condition.type == 'Psychiatric' %}checked{%endif%}>Psychiatric
+					  </label>
+					</div>
+					<div class="radio">
+					  <label>
+					    <input type="radio" name="type" id="type3" value="Clinics" {% if condition.type == 'Clinics'%}checked{%endif%}>Clinics
+					  </label>
+					</div>
+					<div class="radio">
+					  <label>
+					    <input type="radio" name="type" id="type4" value="Surgical" {%if condition.type =='Surgical'%}checked{%endif%}>Surgical
+					  </label>
+					</div>                    
+                        <button class="btn btn-default btn-extra-margin" id="submit" type="submit">
+                           <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>Save
+                        </button>        
+					<a href = "{{ url_for('show_conditions', hospital_id = hospital_id) }}">
+						<button class="btn btn-default btn-extra-margin delete" type="button">
+						  <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>Cancel
+                        </button>
+					</a>
+				</div>
+			</form>
+		</div>
+	</div>
+
+{% endblock %}

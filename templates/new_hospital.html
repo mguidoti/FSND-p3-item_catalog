@@ -1,0 +1,42 @@
+{% extends "main.html" %}
+{% block content %}
+{% include "header.html" %}
+
+	<div class="row divider grey">
+		<div class="col-md-12"></div>
+	</div>
+	<div class="row banner hospital">
+		<div class="col-md-11 col-md-offset-1 padding-none">
+			<h1>New Hospital</h1>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-6 col-md-offset-1 padding-top">
+			<form action="#" method = "post">
+				<div class="form-group">
+					<label for="name">Name:</label>
+					<input type ="text" maxlength="50" class="form-control" name="name" placeholder="Name of the Hospital">
+
+					<label for="insurance">Accepted Insurances:</label>
+					<textarea class="form-control" maxlength="100" name="insurance" placeholder="List of Accepted Insurance Companies separated by comma (,)"></textarea>
+                    
+                    <label for="address">Address:</label>
+					<textarea class="form-control" maxlength="200" rows="2" name="address" placeholder="Address"></textarea>
+                    
+                    <label for="phone">Phone:</label>
+					<input class="form-control" maxlength="50" name="phone" placeholder="Phone Number">
+
+					<button class="btn btn-default btn-extra-margin" id="submit" type="submit">
+					   <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>Create
+                    </button>
+                    <a href="{{ url_for('show_hospitals') }}">
+                        <button class="btn btn-default btn-extra-margin" id="submit" type="button">
+                            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>Cancel
+                        </button>
+                    </a>
+				</div>
+			</form>
+		</div>
+	</div>
+
+{% endblock %}
