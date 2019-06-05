@@ -1,14 +1,12 @@
-import os
-
 from sqlalchemy import Column, ForeignKey, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from sqlalchemy import create_engine
 
 
-
 # Creates an instance of the declarative_base class
 Base = declarative_base()
+
 
 class User(Base):
     # Sets table name
@@ -25,14 +23,15 @@ class User(Base):
     # Creates a serialization property to be used on the API endopoint
     @property
     def serialize(self):
-       return {
-           'name': self.name,
-           'id': self.id,
-           'gender': self.gender,
-           'email': self.email,
-           'picture': self.picture,
-           'type': self.type,
-       }
+        return {
+            'name': self.name,
+            'id': self.id,
+            'gender': self.gender,
+            'email': self.email,
+            'picture': self.picture,
+            'type': self.type,
+        }
+
 
 class Hospital(Base):
     # Sets table name
@@ -50,14 +49,15 @@ class Hospital(Base):
     # Creates a serialization property to be used on the API endopoint
     @property
     def serialize(self):
-       return {
-           'name': self.name,
-           'id': self.id,
-           'accepted_insurance': self.accepted_insurance,
-           'address': self.address,
-           'phone': self.phone,
-           'owner id': self.user_id,
-     }
+        return {
+            'name': self.name,
+            'id': self.id,
+            'accepted_insurance': self.accepted_insurance,
+            'address': self.address,
+            'phone': self.phone,
+            'owner id': self.user_id,
+        }
+
 
 class Condition(Base):
     # Sets table name
