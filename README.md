@@ -53,7 +53,7 @@ Assuming that you've the same environment described above:
 
 ### Database
 
-The database is named `themehospitals.db`, which is created and filled when running the first and second command, respectively, from [#How to Run](###How-to-run). Every additional time this command is used, more hospitals and users are included in the database, until all 50 hospital names and users names stored in the `data_source.py` are used. One user can have more than one health facility, or none. Real users (e.g., you) will never be assigned as owner of a automatically created facility. The program avoids name repetition as well. 
+The database is named `themehospitals.db`, which is created and filled when running the first and second command, respectively, from [#How to Run](#how-to-run). Every additional time this command is used, more hospitals and users are included in the database, until all 50 hospital names and users names stored in the `data_source.py` are used. One user can have more than one health facility, or none. Real users (e.g., you) will never be assigned as owner of a automatically created facility. The program avoids name repetition as well. 
 
 After the database is created and filled, you'll receive a status message with the number of hospitals and users included in that interaction, and the average number of conditions included for the new hospitals. There is no way, other than manually, to add conditions to existent hospitals. 
 
