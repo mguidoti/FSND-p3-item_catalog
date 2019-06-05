@@ -46,7 +46,7 @@ while (number_of_males + number_of_females) < number_of_hospitals:
         # users without adding it to enforce hospital ownership
         # repetition.
         try:
-            user = session.query(User).filter_by(name = user_name).one()
+            user = session.query(User).filter_by(name=user_name).one()
             if gender == 'F':
                 number_of_females += 1
             else:
@@ -67,9 +67,9 @@ while (number_of_males + number_of_females) < number_of_hospitals:
                 number_of_males += 1
 
             # Adds new user
-            new_user = User(name = user_name, email = email,
-                gender = gender, type = 'fake',
-                picture = picture)
+            new_user = User(name=user_name, email=email,
+                            gender=gender, type='fake',
+                            picture=picture)
 
             session.add(new_user)
             session.commit()
@@ -82,7 +82,7 @@ while (number_of_males + number_of_females) < number_of_hospitals:
 
 
 # Add all users and their IDs into a dictionary for easier access
-added_users = session.query(User).filter_by(type = 'fake').all()
+added_users = session.query(User).filter_by(type='fake').all()
 dict_of_added_users = {}
 
 for each_user in added_users:
@@ -110,7 +110,7 @@ while len(hospitals) < number_of_hospitals:
         # Check if it's already added or not
         try:
             hospital = session.query(Hospital).filter_by(
-                name = hospital_name).one()
+                       name=hospital_name).one()
             continue
         except:
 
@@ -136,11 +136,12 @@ while len(hospitals) < number_of_hospitals:
             user_id = dict_of_added_users[user_name]
 
             # Add new hospital
-            new_hospital = Hospital(name = hospital_name,
-                accepted_insurance = accepted_insurance,
-                address = "302 Doesn't Exist St., Not Even Bother, 99999",
-                phone = '900DONTCALL',
-                user_id = user_id)
+            new_hospital = Hospital(name=hospital_name,
+                                    accepted_insurance=accepted_insurance,
+                                    address="302 Doesn't Exist St., Not"
+                                            "Even Bother, 99999",
+                                    phone='900DONTCALL',
+                                    user_id=user_id)
 
             session.add(new_hospital)
             session.commit()
@@ -168,13 +169,13 @@ totalOfConditions = 0
 
 for hospital_name in hospitals:
     hospital = session.query(Hospital).filter_by(
-        name = hospital_name).one()
+                name=hospital_name).one()
 
     conditionRange = random.randint(10, 15)
 
     # Check if the given hospital already have any condition included
     addedConditions = session.query(Condition).filter_by(
-        hospital_id = hospital.id).all()
+                        hospital_id=hospital.id).all()
 
     if len(addedConditions) == 0:
 
@@ -184,24 +185,33 @@ for hospital_name in hospitals:
             # Check if the randomly picked condition already exists
             # for the given hospital, to avoid duplicates
             condition_exists = session.query(Condition).filter_by(
-                hospital_id = hospital.id, name = condition_name).all()
+                                hospital_id=hospital.id,
+                                name=condition_name).all()
 
             if len(condition_exists) == 0:
 
-                #Calculate a random price with floating number and two
+                # Calculate a random price with floating number and two
                 # decimals.
                 cost_min = source.conditions[condition_name]['Cost_Min']
                 cost_max = source.conditions[condition_name]['Cost_Max']
                 cost = round(random.uniform(cost_min, cost_max), 2)
 
-                newCondition = Condition(name = condition_name,
-                    cause = source.conditions[condition_name]['Cause'],
-                    sympton = source.conditions[condition_name]['Sympton'],
-                    cure = source.conditions[condition_name]['Cure'],
-                    type = source.conditions[condition_name]['Type'],
-                    cost = cost,
-                    hospital_id = hospital.id,
-                    user_id = hospital.user_id)
+                newCondition = Condition(name=condition_name,
+                                         cause=source.conditions
+                                         [condition_name]
+                                         ['Cause'],
+                                         sympton=source.conditions
+                                         [condition_name]
+                                         ['Sympton'],
+                                         cure=source.conditions
+                                         [condition_name]
+                                         ['Cure'],
+                                         type=source.conditions
+                                         [condition_name]
+                                         ['Type'],
+                                         cost=cost,
+                                         hospital_id=hospital.id,
+                                         user_id=hospital.user_id)
 
                 session.add(newCondition)
                 session.commit()
@@ -217,10 +227,10 @@ for hospital_name in hospitals:
 # average number of conditions added to the database
 if len(hospitals) == 0:
     print("A total of %s users were succesfully created!" %
-        (str(user_counter)))
+          (str(user_counter)))
 else:
     average_of_added_conditions = totalOfConditions/(len(hospitals))
     print("A total of %s users, %s hospitals, with an average of %s "
-        "conditions were succesfully "
-        "created!" % (str(user_counter), str(len(hospitals)),
-        average_of_added_conditions))
+          "conditions were succesfully "
+          "created!" % (str(user_counter), str(len(hospitals)),
+                        average_of_added_conditions))
