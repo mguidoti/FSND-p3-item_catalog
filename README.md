@@ -127,17 +127,17 @@ The following routes/pages are currently available in this application:
 
 #### List of all Hospitals
 
-| Description                   | Type | Routes                           |
-| ----------------------------- |   | -------------------------------- |
-| Home page, list all Hospitals | READ | / - /hospitals - /hospital       |
-| Login                         |   | /login                           |
-| Hospital Page, list all Conditions for a Hospital | READ | /hospital/<int: hospital_id>        |
-| Add a new Hospital                        | CREATE | /hospital/new                       |
-| Edit a Hospital | UPDATE | /hospital/<int: hospital_id>/edit |
-| Delete a Hospital | DELETE | /hospital/<int: hospital_id>/delete |
-| Add a new Condition for a given Hospital | CREATE | /hospital/<int: hospital_id>/condition/new |
-| Edit a Condition for a given Hospital | UPDATE | /hospital/<int: hospital_id>/condition/<int: condition_id>/edit |
-| Delete a Condition for a given Hospital | DELETE | /hospital/<int: hospital_id>/condition/<int: condition_id>/delete |
+| Description                        | Type   | Routes                                                            |
+| -----------------------------------|--------| ------------------------------------------------------------------|
+| Home page, list all Hospitals      | READ   | /<br>/hospitals<br>/hospital                                      |
+| Login                              |        | /login                                                            |
+| Hospital Page, list all Conditions | READ   | /hospital/<int: hospital_id><br>/hospital/<int:hospital_id>/treatments/<br>/hospital/<int:hospital_id>/conditions/                            |
+| Add a new Hospital                 | CREATE | /hospital/new                                                     |
+| Edit a Hospital                    | UPDATE | /hospital/<int: hospital_id>/edit                                 |
+| Delete a Hospital                  | DELETE | /hospital/<int: hospital_id>/delete                               |
+| Add a new Condition for a Hospital | CREATE | /hospital/<int: hospital_id>/condition/new                        |
+| Edit a Condition for a Hospital    | UPDATE | /hospital/<int: hospital_id>/condition/<int: condition_id>/edit   |
+| Delete a Condition for a Hospital  | DELETE | /hospital/<int: hospital_id>/condition/<int: condition_id>/delete |
 
 
 
@@ -147,9 +147,9 @@ Three API endpoints were added in this project:
 
 | Description                                              | Routes                                                       |
 | -------------------------------------------------------- | ------------------------------------------------------------ |
-| Get all Hospitals                                        | /hospital/JSON                                               |
-| Get all Conditions for a given Hospital                  | /hospital/<int: hospital_id>/condition/JSON                  |
-| Get all data available for one Condition in one Hospital | /hospital/<int: hospital_id>/condition/<int: condition_id>/JSON |
+| Get all Hospitals                                        | /hospital/JSON<br>/hospitals/JSON                            |
+| Get all Conditions for a given Hospital                  | /hospital/<int: hospital_id>/JSON;<br/>/hospital/<int: hospital_id>/conditions/JSON;<br>/hospital/<int: hospital_id>/treatments/JSON                  |
+| Get all data for one Condition in one Hospital | /hospital/<int: hospital_id>/condition/<int: condition_id>/JSON |
 
 
 
