@@ -1,7 +1,13 @@
-from flask import Flask, render_template, request, redirect, jsonify, url_for, flash, make_response
+from flask import Flask, render_template, request
+from flask import redirect, jsonify, url_for
+from flask import flash, make_response
 from flask import session as login_session
 
-import random, string, httplib2, json, requests
+import random
+import string
+import httplib2
+import json
+import requests
 
 from sqlalchemy import create_engine, asc
 from sqlalchemy.orm import sessionmaker
@@ -36,7 +42,7 @@ client_id = json.loads(
 # access route
 @app.route('/login/')
 def login():
-    state = ''.join(random.choice(string.ascii_uppercase + string.digits) for x in xrange(32))
+    state = ''.join(random.choice(string.ascii_uppercase + string.digits) for x in xrange(32))  # noqa
     login_session['state'] = state
 
     return render_template('login.html', STATE=state)
@@ -51,18 +57,18 @@ def login():
 # This takes the data in a login_session and creates a new users with
 # that data. Then returns a user id of the new user created.
 def create_user(login_session):
-    new_user = User(name = login_session['username'], gender='Who cares?', type = 'real', email = login_session['email'], picture = login_session['picture'])
+    new_user = User(name=login_session['username'], gender='Who cares?', type='real', email=login_session['email'], picture=login_session['picture'])  # noqa
     session.add(new_user)
     session.commit()
 
-    user = session.query(User).filter_by(email = login_session['email']).one()
+    user = session.query(User).filter_by(email=login_session['email']).one()
     return user.id
 
 
 # This function simply returns a user object from the database based on
 # a user id.
 def get_user_info(user_id):
-    user = session.query(User).filter_by(id = user_id).one()
+    user = session.query(User).filter_by(id=user_id).one()
     return user
 
 
@@ -70,7 +76,7 @@ def get_user_info(user_id):
 # user with that particular e-mail, returns None.
 def get_user_id(email):
     try:
-        user = session.query(User).filter_by(email = email).one()
+        user = session.query(User).filter_by(email=email).one()
         return user.id
     except:
         return None
@@ -82,7 +88,7 @@ def fbconnect():
     # Anti-forgery system. Checks if the same code is being passed back
     # by the user
     if request.args.get('state') != login_session['state']:
-        response = make_response(json.dumps('Invalid state parameter. You''re not who you say you''re!'), 401)
+        response = make_response(json.dumps('Invalid state parameter. You''re not who you say you''re!'), 401)  # noqa
         response.headers['Content-Type'] = 'application/json'
 
         return response
@@ -90,10 +96,10 @@ def fbconnect():
     access_token = request.data
 
     # Extract and exchange the short-lived for the long-lived token
-    fb_id = json.loads(open(fb_client_secret_file, 'r').read())['web']['app_id']
-    fb_secret = json.loads(open(fb_client_secret_file, 'r').read())['web']['app_secret']
+    fb_id = json.loads(open(fb_client_secret_file, 'r').read())['web']['app_id']  # noqa
+    fb_secret = json.loads(open(fb_client_secret_file, 'r').read())['web']['app_secret']  # noqa
 
-    url = 'https://graph.facebook.com/oauth/access_token?grant_type=fb_exchange_token&client_id=%s&client_secret=%s&fb_exchange_token=%s' % (fb_id, fb_secret, access_token)
+    url = 'https://graph.facebook.com/oauth/access_token?grant_type=fb_exchange_token&client_id=%s&client_secret=%s&fb_exchange_token=%s' % (fb_id, fb_secret, access_token)  # noqa
     h = httplib2.Http()
     result = h.request(url, 'GET')[1]
 
@@ -105,7 +111,7 @@ def fbconnect():
     fb_token = result.split(',')[0].split(':')[1].replace('"', '')
 
     # Actually make the API call to the graph API to get user data
-    url = 'https://graph.facebook.com/v2.8/me?access_token=%s&fields=name,id,email' % fb_token
+    url = 'https://graph.facebook.com/v2.8/me?access_token=%s&fields=name,id,email' % fb_token  # noqa
     h = httplib2.Http()
     result = h.request(url, 'GET')[1]
 
@@ -123,7 +129,7 @@ def fbconnect():
 
     # Facebook uses a different API call to get a profile picture. Here
     # it' is:
-    url = 'https://graph.facebook.com/me/picture?redirect&access_token=%s&height=200&width=200' % fb_token
+    url = 'https://graph.facebook.com/me/picture?redirect&access_token=%s&height=200&width=200' % fb_token  # noqa
     h = httplib2.Http()
     result = h.request(url, 'GET')[1]
     data = json.loads(result)
@@ -147,7 +153,11 @@ def fbconnect():
     output += '!</h1>'
     output += '<img src="'
     output += login_session['picture']
-    output += ' " style = "width: 300px; height: 300px; border-radius: 150px; -webkit-border-radius: 150px; -moz-border-radius: 150px;">'
+    output += ' "style = "width: 250px;'
+    output += 'height: 250px;'
+    output += 'border-radius: 150px;'
+    output += '-webkit-border-radius: 150px;'
+    output += '-moz-border-radius: 150px;">'
 
     flash("You are now logged in as %s" % login_session['username'])
 
@@ -156,7 +166,8 @@ def fbconnect():
 
 @app.route('/gconnect', methods=['POST'])
 def gconnect():
-    # Anti-forgery system. Checks if the same code is being passed back by the user
+    # Anti-forgery system. Checks if the same code is being passed back
+    # by the user
     if request.args.get('state') != login_session['state']:
         response = make_response(json.dumps('Invalid state parameter'), 401)
         response.headers['Content-Type'] = 'application/json'
@@ -186,7 +197,7 @@ def gconnect():
 
         return response
 
-    ## Check that the access token is valid
+    # Check that the access token is valid
     # Store the access token inside a variable
     access_token = credentials.access_token
 
@@ -270,7 +281,11 @@ def gconnect():
     output += '!</h1>'
     output += '<img src="'
     output += login_session['picture']
-    output += ' " style = "width: 300px; height: 300px; border-radius: 150px; -webkit-border-radius: 150px; -moz-border-radius: 150px;">'
+    output += ' "style = "width: 250px;'
+    output += 'height: 250px;'
+    output += 'border-radius: 150px;'
+    output += '-webkit-border-radius: 150px;'
+    output += '-moz-border-radius: 150px;">'
 
     flash("You are now logged in as %s" % login_session['username'])
 
@@ -294,8 +309,8 @@ def disconnect():
     if 'provider' in login_session:
         if login_session['provider'] == 'google':
 
-            #Execute HTTP GET request to revoke current token
-            url = 'https://accounts.google.com/o/oauth2/revoke?token=%s' % access_token
+            # Execute HTTP GET request to revoke current token
+            url = 'https://accounts.google.com/o/oauth2/revoke?token=%s' % access_token  # noqa
             h = httplib2.Http()
             result = h.request(url, 'GET')[0]
 
@@ -304,7 +319,8 @@ def disconnect():
 
             else:
                 # For whatever reason, the given token was invalid
-                flash("Failed to revoke token for your user. No idea why. Sorry.")
+                flash("Failed to revoke token for your user."
+                      "No idea why. Sorry.")
 
                 return redirect(url_for('show_hospitals'))
 
@@ -314,7 +330,7 @@ def disconnect():
             facebook_id = login_session.get('facebook_id')
 
             # Execute HTTP DELETE request to revoke current token
-            url = 'https://graph.facebook.com/%s/permissions?access_token=%s' % (facebook_id, access_token)
+            url = 'https://graph.facebook.com/%s/permissions?access_token=%s' % (facebook_id, access_token)  # noqa
             h = httplib2.Http()
             result = h.request(url, 'DELETE')[1]
 
@@ -343,7 +359,7 @@ def disconnect():
         return redirect(url_for('show_hospitals'))
 
 
-#Show all the hospitals
+# Show all the hospitals
 @app.route('/')
 @app.route('/hospitals/')
 @app.route('/hospital/')
@@ -354,14 +370,14 @@ def show_hospitals():
     # Check if the user is logged in and redirects accordingly
     if 'username' not in login_session:
         return render_template('public_hospitals.html',
-        hospitals = hospitals)
+                               hospitals=hospitals)
 
     else:
-        return render_template('hospitals.html', hospitals = hospitals)
+        return render_template('hospitals.html', hospitals=hospitals)
 
 
-#Create a new hospital
-@app.route('/hospital/new/', methods=['GET','POST'])
+# Create a new hospital
+@app.route('/hospital/new/', methods=['GET', 'POST'])
 def new_hospital():
     # Check if the user is logged in and redirects accordingly
     if 'username' not in login_session:
@@ -370,7 +386,7 @@ def new_hospital():
     # If the user is logged in, then proceed
     if request.method == 'POST':
         # Actually create the new hospital
-        new_hospital = Hospital(name = request.form['name'], user_id = login_session['user_id'], accepted_insurance = request.form['insurance'], address = request.form['address'], phone = request.form['phone'])
+        new_hospital = Hospital(name=request.form['name'], user_id=login_session['user_id'], accepted_insurance=request.form['insurance'], address=request.form['address'], phone=request.form['phone'])  # noqa
 
         # Add to the database and flash a confirmation message
         session.add(new_hospital)
@@ -383,19 +399,19 @@ def new_hospital():
         return render_template('new_hospital.html')
 
 
-#Edit a hospital
-@app.route('/hospital/<int:hospital_id>/edit/', methods = ['GET', 'POST'])
+# Edit a hospital
+@app.route('/hospital/<int:hospital_id>/edit/', methods=['GET', 'POST'])
 def edit_hospital(hospital_id):
     # Check if the user is logged in and redirects accordingly
     if 'username' not in login_session:
-      return redirect('/login')
+        return redirect('/login')
 
     # Retrieves the hospital to edit
-    edited_hospital = session.query(Hospital).filter_by(id = hospital_id).one()
+    edited_hospital = session.query(Hospital).filter_by(id=hospital_id).one()
 
     # Check if the user has the access to edit the hospital
     if edited_hospital.user_id != login_session['user_id']:
-        return "<script>function myFunction() { alert('You are not authorized to edit this hospital. Please create your own hospital in order to edit.')}</script><body onload='myFunction()'>"
+        return "<script>function myFunction() { alert('You are not authorized to edit this hospital. Please create your own hospital in order to edit.')}</script><body onload='myFunction()'>"  # noqa
 
     # Control variable to check if any changed happened or not
     changes = False
@@ -419,7 +435,7 @@ def edit_hospital(hospital_id):
             changes = True
 
         # Check if there was any changes to flash the right message
-        if changes == True:
+        if changes:
             session.add(edited_hospital)
             flash('Hospital %s successfully modified!' % edited_hospital.name)
             session.commit()
@@ -427,25 +443,25 @@ def edit_hospital(hospital_id):
         else:
             flash('Nothing changed for hospital %s!' % edited_hospital.name)
 
-        return redirect(url_for('show_conditions', hospital_id = edited_hospital.id))
+        return redirect(url_for('show_conditions', hospital_id=edited_hospital.id))  # noqa
 
     else:
-        return render_template('edit_hospital.html', hospital = edited_hospital)
+        return render_template('edit_hospital.html', hospital=edited_hospital)
 
 
-#Delete a hospital
-@app.route('/hospital/<int:hospital_id>/delete/', methods = ['GET','POST'])
+# Delete a hospital
+@app.route('/hospital/<int:hospital_id>/delete/', methods=['GET', 'POST'])
 def delete_hospital(hospital_id):
     # Check if the user is logged in and redirects accordingly
     if 'username' not in login_session:
         return redirect('/login')
 
     # Retrieves the hospital to delete
-    hospital_to_delete = session.query(Hospital).filter_by(id = hospital_id).one()
+    hospital_to_delete = session.query(Hospital).filter_by(id=hospital_id).one()  # noqa
 
     # Check if the user has the access to delete the hospital
     if hospital_to_delete.user_id != login_session['user_id']:
-        return "<script>function myFunction() { alert('You are not authorized to delete this hospital. Please create your own hospital if you want to delete something.')}</script><body onload='myFunction()'>"
+        return "<script>function myFunction() { alert('You are not authorized to delete this hospital. Please create your own hospital if you want to delete something.')}</script><body onload='myFunction()'>"  # noqa
 
     # Delete the hospital as required
     if request.method == 'POST':
@@ -453,77 +469,75 @@ def delete_hospital(hospital_id):
         flash('Hospital %s successfully deleted ;(' % hospital_to_delete.name)
         session.commit()
 
-        return redirect(url_for('show_hospitals', hospital_id = hospital_id))
+        return redirect(url_for('show_hospitals', hospital_id=hospital_id))
 
     else:
-        return render_template('delete_hospital.html', hospital = hospital_to_delete)
+        return render_template('delete_hospital.html', hospital=hospital_to_delete)  # noqa
 
 
-#Show the list of conditions treated in a given hospital
+# Show the list of conditions treated in a given hospital
 @app.route('/hospital/<int:hospital_id>/')
 @app.route('/hospital/<int:hospital_id>/treatments/')
 @app.route('/hospital/<int:hospital_id>/conditions/')
 def show_conditions(hospital_id):
     # Retrieves the hospital and then, the list of conditions associated
     # with that hospital
-    hospital = session.query(Hospital).filter_by(id = hospital_id).one()
-    conditions = session.query(Condition).filter_by(hospital_id = hospital_id).all()
+    hospital = session.query(Hospital).filter_by(id=hospital_id).one()
+    conditions = session.query(Condition).filter_by(hospital_id=hospital_id).all()  # noqa
 
     # Checks if the hospital's creator user is on my database
     creator = get_user_info(hospital.user_id)
-    #creator = hospital.user_id
 
     # Compares to the current user id, if it's logged
-    if 'username' not in login_session or creator.id != login_session['user_id']:
-        return render_template('public_conditions.html', conditions = conditions, hospital = hospital, creator = creator)
+    if 'username' not in login_session or creator.id != login_session['user_id']:  # noqa
+        return render_template('public_conditions.html', conditions=conditions, hospital=hospital, creator=creator)  # noqa
 
     else:
-        return render_template('conditions.html', conditions = conditions, hospital = hospital, creator = creator)
+        return render_template('conditions.html', conditions=conditions, hospital=hospital, creator=creator)  # noqa
 
 
-
-#Add a new condition to a given hospital
-@app.route('/hospital/<int:hospital_id>/condition/new/',methods=['GET','POST'])
+# Add a new condition to a given hospital
+@app.route('/hospital/<int:hospital_id>/condition/new/', methods=['GET', 'POST'])  # noqa
 def new_condition(hospital_id):
     # Check if the user is logged in and redirects accordingly
     if 'username' not in login_session:
         return redirect('/login')
 
     # Retrieves the hospital
-    hospital = session.query(Hospital).filter_by(id = hospital_id).one()
+    hospital = session.query(Hospital).filter_by(id=hospital_id).one()
 
     # Compares the current user id with the hospital users id
     if hospital.user_id != login_session['user_id']:
-        return "<script>function myFunction() { alert('You are not authorized to add a condition in this hospital. Please create your own hospital in order to proceed.')}</script><body onload='myFunction()'>"
+        return "<script>function myFunction() { alert('You are not authorized to add a condition in this hospital. Please create your own hospital in order to proceed.')}</script><body onload='myFunction()'>"  # noqa
 
     if request.method == 'POST':
         # Actually create the new condition
-        new_condition = Condition(name = request.form['name'], cause = request.form['cause'], sympton = request.form['sympton'], cure = request.form['cure'], cost = request.form['cost'], type = request.form['type'], hospital_id = hospital_id, user_id = login_session['user_id'])
+        new_condition = Condition(name=request.form['name'], cause=request.form['cause'], sympton=request.form['sympton'], cure=request.form['cure'], cost=request.form['cost'], type=request.form['type'], hospital_id=hospital_id, user_id=login_session['user_id'])  # noqa
 
         session.add(new_condition)
         flash('Condition %s added successfully!' % (new_condition.name))
         session.commit()
 
-        return redirect(url_for('show_conditions', hospital_id = hospital_id))
+        return redirect(url_for('show_conditions', hospital_id=hospital_id))
 
     else:
-        return render_template('new_condition.html', hospital_id = hospital_id)
+        return render_template('new_condition.html', hospital_id=hospital_id)
 
 
-#Edit a condition in a given hospital
-@app.route('/hospital/<int:hospital_id>/condition/<int:condition_id>/edit/', methods=['GET','POST'])
+# Edit a condition in a given hospital
+@app.route('/hospital/<int:hospital_id>/condition/<int:condition_id>/edit/', methods=['GET', 'POST'])  # noqa
 def edit_condition(hospital_id, condition_id):
     # Check if the user is logged in and redirects accordingly
     if 'username' not in login_session:
         return redirect('/login')
 
     # Retrieves the hospital, and the condition to be editted hospital
-    hospital = session.query(Hospital).filter_by(id = hospital_id).one()
-    edited_condition = session.query(Condition).filter_by(id = condition_id).one()
+    hospital = session.query(Hospital).filter_by(id=hospital_id).one()
+    edited_condition = session.query(Condition).filter_by(id=condition_id).one()  # noqa
 
     # Compares the current user id with the hospital users id
     if hospital.user_id != login_session['user_id']:
-        return "<script>function myFunction() { alert('You are not authorized to edit a condition in this hospital. Please create your own hospital in order to proceed.')}</script><body onload='myFunction()'>"
+        return "<script>function myFunction() { alert('You are not authorized to edit a condition in this hospital. Please create your own hospital in order to proceed.')}</script><body onload='myFunction()'>"  # noqa
 
     # Control variable to check if any changed happened or not
     changes = False
@@ -546,7 +560,6 @@ def edit_condition(hospital_id, condition_id):
             edited_condition.cure = request.form['cure']
             changes = True
 
-
         if request.form['cost'] != edited_condition.cost:
             edited_condition.cost = request.form['cost']
             changes = True
@@ -557,45 +570,45 @@ def edit_condition(hospital_id, condition_id):
             changes = True
 
         # Check if there was any changes to flash the right message
-        if changes == True:
+        if changes:
             print('why?')
             session.add(edited_condition)
-            flash('Condition %s successfully modified!' % edited_condition.name)
+            flash('Condition %s successfully modified!' % edited_condition.name)  # noqa
             session.commit()
 
         else:
             flash('Nothing changed for condition %s!' % edited_condition.name)
 
-        return redirect(url_for('show_conditions', hospital_id = hospital_id))
+        return redirect(url_for('show_conditions', hospital_id=hospital_id))
 
     else:
-        return render_template('edit_condition.html', hospital_id = hospital_id, condition_id = condition_id, condition = edited_condition)
+        return render_template('edit_condition.html', hospital_id=hospital_id, condition_id=condition_id, condition=edited_condition)  # noqa
 
 
-#Delete a condition in a given hospital
-@app.route('/hospital/<int:hospital_id>/condition/<int:condition_id>/delete/', methods = ['GET','POST'])
+# Delete a condition in a given hospital
+@app.route('/hospital/<int:hospital_id>/condition/<int:condition_id>/delete/', methods=['GET', 'POST'])  # noqa
 def delete_condition(hospital_id, condition_id):
     if 'username' not in login_session:
         return redirect('/login')
 
     # Retrieves the hospital, and the condition to be editted hospital
-    hospital = session.query(Hospital).filter_by(id = hospital_id).one()
-    condition_to_delete = session.query(Condition).filter_by(id = condition_id).one()
+    hospital = session.query(Hospital).filter_by(id=hospital_id).one()
+    condition_to_delete = session.query(Condition).filter_by(id=condition_id).one()  # noqa
 
     # Compares the current user id with the hospital users id
     if hospital.user_id != login_session['user_id']:
-        return "<script>function myFunction() { alert('You are not authorized to delete a condition in this hospital. Please create your own hospital in order to proceed.')}</script><body onload='myFunction()'>"
+        return "<script>function myFunction() { alert('You are not authorized to delete a condition in this hospital. Please create your own hospital in order to proceed.')}</script><body onload='myFunction()'>"  # noqa
 
     if request.method == 'POST':
         # Actually delete the condition
         session.delete(condition_to_delete)
-        flash('Condition %s successfully deleted ;(' % (condition_to_delete.name))
+        flash('Condition %s successfully deleted ;(' % (condition_to_delete.name))  # noqa
         session.commit()
 
-        return redirect(url_for('show_conditions', hospital_id = hospital_id))
+        return redirect(url_for('show_conditions', hospital_id=hospital_id))
 
     else:
-        return render_template('delete_condition.html', hospital = hospital, condition = condition_to_delete)
+        return render_template('delete_condition.html', hospital=hospital, condition=condition_to_delete)  # noqa
 
 
 # API Endoints returning JSON
@@ -607,8 +620,8 @@ def delete_condition(hospital_id, condition_id):
 def hospitals_JSON():
     hospitals = session.query(Hospital).all()
 
-    return jsonify(hospitals =
-        [hospital.serialize for hospital in hospitals])
+    return jsonify(hospitals=[hospital.serialize for
+                              hospital in hospitals])
 
 
 # This second endpoint returns all conditions available for treatment
@@ -617,12 +630,12 @@ def hospitals_JSON():
 @app.route('/hospital/<int:hospital_id>/conditions/JSON')
 @app.route('/hospital/<int:hospital_id>/treatments/JSON')
 def hospital_treatments_JSON(hospital_id):
-    hospital = session.query(Hospital).filter_by(id = hospital_id).one()
-    conditions = session.query(Condition).filter_by(hospital_id = hospital.id).all()
+    hospital = session.query(Hospital).filter_by(id=hospital_id).one()
+    conditions = session.query(Condition).filter_by(hospital_id=hospital.id).all()  # noqa
 
     return jsonify(
-        Hospital = hospital.serialize,
-        Conditions = [condition.serialize for condition in conditions])
+        Hospital=hospital.serialize,
+        Conditions=[condition.serialize for condition in conditions])
 
 
 # This third and final endpoint returns all information available for
@@ -632,12 +645,12 @@ def hospital_treatments_JSON(hospital_id):
 # one
 @app.route('/hospital/<int:hospital_id>/condition/<int:condition_id>/JSON')
 def condition_JSON(hospital_id, condition_id):
-    condition = session.query(Condition).filter_by(id = condition_id).one()
+    condition = session.query(Condition).filter_by(id=condition_id).one()
 
-    return jsonify(condition = condition.serialize)
+    return jsonify(condition=condition.serialize)
 
 
 if __name__ == '__main__':
-  app.secret_key = 'super_secret_key'
-  app.debug = True
-  app.run(host='0.0.0.0', port=5000)
+    app.secret_key = 'super_secret_key'
+    app.debug = True
+    app.run(host='0.0.0.0', port=5000)
