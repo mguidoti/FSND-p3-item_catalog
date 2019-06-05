@@ -129,7 +129,7 @@ The following routes/pages are currently available in this application:
 
 | Description                        | Type   | Routes                                                            |
 | -----------------------------------|--------| ------------------------------------------------------------------|
-| Home page, list all Hospitals      | READ   | /<br>/hospitals<br>/hospital                                      |
+| Home page, list all Hospitals      | READ   | /<br>/hospital<br>/hospitals                                      |
 | Login                              |        | /login                                                            |
 | Hospital Page, list all Conditions | READ   | /hospital/<int: hospital_id><br>/hospital/<int:hospital_id>/treatments/<br>/hospital/<int:hospital_id>/conditions/                            |
 | Add a new Hospital                 | CREATE | /hospital/new                                                     |
