@@ -1,3 +1,9 @@
+"""
+Fills the database radomly.
+
+Can be re-used until all hospitals and people's names have been used.
+"""
+
 from __future__ import division
 import random
 

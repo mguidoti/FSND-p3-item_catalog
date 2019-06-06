@@ -1,3 +1,7 @@
+"""
+Data source used to populate the database.
+"""
+
 conditions = {
     'Broken wind': {
         'Cause': 'Using a gymnasium treadmill after a meal',

@@ -1,3 +1,7 @@
+"""
+Define routes and API points powering the Theme Hospital Finder app.
+"""
+
 from flask import Flask, render_template, request
 from flask import redirect, jsonify, url_for
 from flask import flash, make_response
