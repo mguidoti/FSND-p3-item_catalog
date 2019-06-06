@@ -1,5 +1,5 @@
 """
-Creates the database themehospitals.db
+Creates the database themehospitals.db.
 """
 
 from sqlalchemy import Column, ForeignKey, Integer, String
@@ -13,6 +13,11 @@ Base = declarative_base()
 
 
 class User(Base):
+    """
+    Defines table User and its parameters.
+
+    Parameters: id (int), name, gender, email, type, picture (string).
+    """
     # Sets table name
     __tablename__ = 'user'
 
@@ -38,6 +43,13 @@ class User(Base):
 
 
 class Hospital(Base):
+    """
+    Defines table Hospital and its parameters.
+
+    Parameters: id, user_id (int); name, accepted_insurance, address, phone (string).  # noqa
+
+    Relationship: User.
+    """
     # Sets table name
     __tablename__ = 'hospital'
 
@@ -64,6 +76,13 @@ class Hospital(Base):
 
 
 class Condition(Base):
+    """
+    Defines table Condition and its parameters.
+
+    Parameters: id, user_id, hospital_id (int); name, cause, sympton, cure, type, cost (string).  # noqa
+
+    Relationship: User, Hospital
+    """
     # Sets table name
     __tablename__ = 'condition'
 
