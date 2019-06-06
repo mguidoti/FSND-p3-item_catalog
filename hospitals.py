@@ -15,7 +15,7 @@ import requests
 
 from sqlalchemy import create_engine, asc
 from sqlalchemy.orm import sessionmaker
-from database_setup import Base, User, Hospital, Condition
+from initiate_database import Base, User, Hospital, Condition
 
 from oauth2client.client import flow_from_clientsecrets
 from oauth2client.client import FlowExchangeError
