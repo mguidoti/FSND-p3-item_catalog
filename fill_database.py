@@ -10,7 +10,7 @@ import random
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from database_setup import Base, User, Hospital, Condition
+from initiate_database import Base, User, Hospital, Condition
 import data_source as source
 
 
