@@ -15,16 +15,16 @@
             <form action="{{ url_for('edit_hospital', hospital_id = hospital.id)}}" method = "post">
                 <div class="form-group">
 					<label for="name">Name:</label>
-					<input type ="text" maxlength="50" class="form-control" name="name" value="{{ hospital.name }}">
+					<input type ="text" maxlength="50" class="form-control" name="name" value="{{ hospital.name }}" required>
 
 					<label for="insurance">Accepted Insurances:</label>
-					<input class="form-control" maxlength="100" name="insurance" value="{{ hospital.accepted_insurance }}">
+					<input class="form-control" maxlength="100" name="insurance" value="{{ hospital.accepted_insurance }}" required>
                     
                     <label for="address">Address:</label>
-					<input class="form-control" maxlength="200" name="address" value="{{ hospital.address }}">
+					<input class="form-control" maxlength="200" name="address" value="{{ hospital.address }}" required>
                     
                     <label for="phone">Phone:</label>
-					<input class="form-control" maxlength="50" name="phone" value="{{ hospital.phone }}">
+					<input class="form-control" maxlength="50" name="phone" value="{{ hospital.phone }}" required>
                     
                     <button class="btn btn-default btn-extra-margin" id="submit" type="submit">
                         <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>Save

@@ -19,18 +19,18 @@
 					<input type ="text" maxlength="100" class="form-control" name="name" value="{{ condition.name }}">
                     
                     <label for="cause">Cause:</label>
-					<input class="form-control" maxlength="250" name="cause" value="{{ condition.cause }}">
+					<input class="form-control" maxlength="250" name="cause" value="{{ condition.cause }}" required>
                     
                     <label for="sympton">Sympton:</label>
-					<input class="form-control" maxlength="250" name="sympton" value="{{ condition.sympton }}">
+					<input class="form-control" maxlength="250" name="sympton" value="{{ condition.sympton }}" required>
                     
                     <label for="cure">Cure:</label>
-					<textarea class="form-control" maxlength="250" rows="3" name="cure">{{ condition.cure }}</textarea>
+					<input class="form-control" maxlength="250" rows="3" name="cure" value="{{ condition.cure }}" required>
 
 					<label for="cost">Cost:</label>
 					<div class="input-group">
 						<div class="input-group-addon">$</div>
-						<input type ="text" maxlength="10" class="form-control" name="cost" value="{{ condition.cost }}">
+						<input type ="text" maxlength="10" class="form-control" name="cost" value="{{ condition.cost }}" required>
 					</div>
 					<label for="type">Type:</label>
 					<div class="radio">

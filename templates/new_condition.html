@@ -15,21 +15,21 @@
 			<form action="#" method = "post">
 				<div class="form-group">
 					<label for="name">Name:</label>
-					<input type ="text" maxlength="50" class="form-control" name="name" placeholder="Name of the Condition">
+					<input type ="text" maxlength="50" class="form-control" name="name" placeholder="Name of the Condition" required>
 
 					<label for="cause">Cause:</label>
-					<textarea class="form-control" rows="3" maxlength="250" name="cause" placeholder="Cause of the Condition"></textarea>
+					<input class="form-control" rows="3" maxlength="250" name="cause" placeholder="Cause of the Condition" required>
                     
                     <label for="sympton">Sympton:</label>
-					<input class="form-control" maxlength="250" name="sympton" placeholder="Sympton(s) of the Condition">
+					<input class="form-control" maxlength="250" name="sympton" placeholder="Sympton(s) of the Condition" required>
                     
                     <label for="cure">Cure:</label>
-					<input class="form-control" maxlength="250" name="cure" placeholder="Cure for the Condition">
+					<input class="form-control" maxlength="250" name="cure" placeholder="Cure for the Condition" required>
 
 					<label for="cost">Cost:</label>
 					<div class="input-group">
 						<div class="input-group-addon">$</div>
-						<input type ="text" class="form-control" maxlength="10" name="cost" placeholder="Cost in $">
+						<input type ="text" class="form-control" maxlength="10" name="cost" placeholder="Cost in $" required>
 					</div>
 					<label for="type">Type:</label>
 					<div class="radio">
