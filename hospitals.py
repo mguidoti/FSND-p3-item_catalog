@@ -159,7 +159,7 @@ def fbconnect():
     output += '-webkit-border-radius: 150px;'
     output += '-moz-border-radius: 150px;">'
 
-    flash("You are now logged in as %s" % login_session['username'])
+    flash("You are now logged in as %s." % login_session['username'])
 
     return output
 
@@ -287,7 +287,7 @@ def gconnect():
     output += '-webkit-border-radius: 150px;'
     output += '-moz-border-radius: 150px;">'
 
-    flash("You are now logged in as %s" % login_session['username'])
+    flash("You are now logged in as %s." % login_session['username'])
 
     return output
 
@@ -389,7 +389,7 @@ def new_hospital():
 
         # Add to the database and flash a confirmation message
         session.add(new_hospital)
-        flash('New hospital %s successfully created' % new_hospital.name)
+        flash('New hospital %s successfully created!' % new_hospital.name)
         session.commit()
 
         return redirect(url_for('show_hospitals'))
