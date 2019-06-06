@@ -17,7 +17,7 @@ In addition, [Python PEP8 style guide](https://www.python.org/dev/peps/pep-0008/
 
 
 
-### Chosen Theme
+#### Chosen Theme
 
 For this project, I choose to create an initial version of an app that would gather information on health facilities, including the list of accepted health insurance provider and a list of available treatment with their prices as well, for each facility. The goal is to have an easy-to-use application to retrieve the nearest, or cheapest, facility for a given condition. This type of information, especially prices, is often hidden - thus, this could be actually useful if it was a real app. 
 
@@ -27,11 +27,11 @@ In order to fill the databases for this project, I chose the list of diseases fr
 
 
 
-### Installation Requirements and Used Setup
+### Installation and Used Setup
 
 To run this application, I use [VirtualBox](https://www.virtualbox.org/wiki/Downloads) and [vagrant](https://www.vagrantup.com/downloads.html). 
 
-Then, I forked this provided [repository](https://github.com/udacity/OAuth2.0), cloned to my computer, and ran the `pg_config.sh` in order to finish the VM setup. 
+Then, I forked this provided [repository](https://github.com/udacity/OAuth2.0), which includes a Vagrant VM set for this project. So, I cloned this repo to my computer, and ran the `pg_config.sh` in order to finish the VM setup. 
 
 Then, I had to create a developer's account and register my application in the two used Oauth2 providers, [Google](https://console.developers.google.com) and [Facebook](https://developers.facebook.com). Finally, I downloaded my `client_secrets.json`, and included in the root folder of my application. My personal `client_secrets.json` are not included in this repository for security reasons. Please, use yours to properly run this application.
 
@@ -50,6 +50,8 @@ Assuming that you've the same environment described above:
 4. Finally, you must access the project on your browser: `http://localhost:5000`
 
 
+If you're not in the same environment as described above, I do provide a `requirements.txt` now. Thus, you should be able to run this app if you: `pip install -r requirements.txt`.
+
 
 ### Database
 
@@ -61,7 +63,7 @@ If you delete the database and run this command again, a new database will be cr
 
 The database is composed by three tables, as follows: 
 
-##### User
+#### User
 
 | Column  | Type    | Modifiers/Foreign Relationship |
 | ------- | ------- | ------------------------------ |
@@ -73,7 +75,7 @@ The database is composed by three tables, as follows:
 | picture | text    |                                |
 
 
-##### Hospital
+#### Hospital
 
 | Column             | Type    | Modifiers/Foreign Relationship |
 | ------------------ | ------- | ------------------------------ |
@@ -84,7 +86,7 @@ The database is composed by three tables, as follows:
 | phone              | text    | not null                       |
 | user_id            | integer | ForeignKey(User.id)            |
 
-##### Condition
+#### Condition
 
 | Column      | Type    | Modifiers/Foreign Relationship |
 | ----------- | ------- | ------------------------------ |
@@ -100,7 +102,7 @@ The database is composed by three tables, as follows:
 
 
 
-### Data & Images
+#### Data & Images
 
 The header image is based on the [Theme Hospital](https://www.ea.com/news/theme-hospital-is-on-the-house) logotype, and the source image for that was found [here](<http://www.kabukis.com/wp-content/uploads/2015/01/theme-hospital-759x500.jpg>). The [profile images](https://www.clipartmax.com/middle/m2i8K9H7K9A0A0Z5_doctor-and-nurse-cartoon-doctor-and-nurse) for the fake users in the database were found on [clipartmax.com](http://www.clipartmax.com). The required editing was made using [Gimp](https://www.gimp.org/). 
 
@@ -113,7 +115,10 @@ All textual data used to create and fill the database is available in lists, dic
 
 
 
-### Design
+### Application
+
+
+#### Design
 
 As layout/design wasn't a requirement in this project, the design used in this application was heavily based on the templates provided in the [forked repository](https://github.com/udacity/OAuth2.0/tree/master/templates), in order to focus on the development of the actual CRUD application. 
 
@@ -121,11 +126,9 @@ As this wasn't a requirement for this project, the design is not responsive.
 
 
 
-### Routes/Pages
+#### Routes/Pages
 
 The following routes/pages are currently available in this application:
-
-#### List of all Hospitals
 
 | Description                        | Type   | Routes                                                            |
 | -----------------------------------|--------| ------------------------------------------------------------------|
@@ -141,7 +144,7 @@ The following routes/pages are currently available in this application:
 
 
 
-### API Endpoints
+#### API Endpoints
 
 Three API endpoints were added in this project:
 
@@ -153,7 +156,7 @@ Three API endpoints were added in this project:
 
 
 
-### Oauth2
+#### Oauth2
 
 I'm using both [Google](https://developers.google.com/identity/protocols/OAuth2) and [Facebook](https://developers.facebook.com/docs/facebook-login/) Oauth2 authentication and authorization services. 
 
@@ -169,8 +172,7 @@ This is just a learning project, not planned to be released. No copyright infrin
 
 Five bugs currently exist in this application.
 
-1. The green bar showing flash messages is bigger on a hospital page than on the homepage. Couldn't figured why. Sorry!
+1. The green bar showing flash messages is bigger on a hospital page than on the homepage. Couldn't figured that out. Sorry!
 2. Sometimes when re-running the `python fill_database.py` command, it will cause error. The log from the error is available [here](https://github.com/mguidoti/FSND-p4-item_catalog/blob/master/bug_report/sql_bug.txt). I think it's probably something that keeps the `*.db` open, and thus, can't write new information on it? It's definitely a sqlite issue, not my application's issue.
-3. I'm not checking if there are any values what so ever when creating hospitals or conditions, neither if the input values are of a given type. This means that you can create something completely blank or totally nonsense (e.g., cost = chihuahua). But why would you do that to me?
-4. Sometimes, for some reason that I simply couldn't figure out, trying to disconnect will fail. I think it has something to do with me messing around with the server, causing problems with the login_session. Or some sort of expiration time for the tokens. Not sure. Sorry! But if you don't stay logged forever neither mess around with the server, should be all right.
-5. According to this [question on stack overflow](https://stackoverflow.com/questions/44520959/how-to-get-gender-and-birthday-information-of-a-google-sign-in-user-using-people), the access to the gender information on Google accounts might be private and therefore, inaccessible. In order to avoid potential problems with this, I simply set the gender of real users (e.g., you) to 'Who cares?'. Not a bug, just explaining I guess?
+3. Sometimes, for some reason that I simply couldn't figure out, trying to disconnect will fail. I think it has something to do with me messing around with the server, causing problems with the login_session. Or some sort of expiration time for the tokens. Not sure. Sorry! But if you don't stay logged forever neither mess around with the server, should be all right.
+4. According to this [question on stack overflow](https://stackoverflow.com/questions/44520959/how-to-get-gender-and-birthday-information-of-a-google-sign-in-user-using-people), the access to the gender information on Google accounts might be private and therefore, inaccessible. In order to avoid potential problems with this, I simply set the gender of real users (e.g., you) to 'Who cares?'. Not a bug, just explaining I guess?
