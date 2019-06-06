@@ -44,8 +44,12 @@ client_id = json.loads(
 # adding users to the database, collecting basic information from the
 # providers only (username, e-mail and picture), using only /login as
 # access route
+
 @app.route('/login/')
 def login():
+    """
+    Creates login webpage and sends the anti-forgery state token.
+    """
     state = ''.join(random.choice(string.ascii_uppercase + string.digits) for x in xrange(32))  # noqa
     login_session['state'] = state
 
@@ -58,9 +62,12 @@ def login():
 # user used the same email in google and facebook, he can login with
 # either of these third-party oauth2 providers and it will work.
 
-# This takes the data in a login_session and creates a new users with
-# that data. Then returns a user id of the new user created.
 def create_user(login_session):
+    """
+    Creates new user from data stored on login_session.
+
+    Returns user id of the recently created user.
+    """
     new_user = User(name=login_session['username'], gender='Who cares?', type='real', email=login_session['email'], picture=login_session['picture'])  # noqa
     session.add(new_user)
     session.commit()
@@ -69,16 +76,18 @@ def create_user(login_session):
     return user.id
 
 
-# This function simply returns a user object from the database based on
-# a user id.
 def get_user_info(user_id):
+    """
+    Returns a user object from the database based on the provided user id.
+    """
     user = session.query(User).filter_by(id=user_id).one()
     return user
 
 
-# This returns a user id based on an e-mail address. If there is no
-# user with that particular e-mail, returns None.
 def get_user_id(email):
+    """
+    Returns, if exists, a user id by querying the provided e-mail.
+    """
     try:
         user = session.query(User).filter_by(email=email).one()
         return user.id
@@ -86,9 +95,11 @@ def get_user_id(email):
         return None
 
 
-# Oauth2 for Facebook - Using anti-forgery system
 @app.route('/fbconnect', methods=['POST'])
 def fbconnect():
+    """
+    Oauth2 for Facebook - Using anti-forgery system.
+    """
     # Anti-forgery system. Checks if the same code is being passed back
     # by the user
     if request.args.get('state') != login_session['state']:
@@ -170,6 +181,9 @@ def fbconnect():
 
 @app.route('/gconnect', methods=['POST'])
 def gconnect():
+    """
+    Oauth2 for Google - Using anti-forgery system.
+    """
     # Anti-forgery system. Checks if the same code is being passed back
     # by the user
     if request.args.get('state') != login_session['state']:
@@ -296,10 +310,13 @@ def gconnect():
     return output
 
 
-# Disconnects a user by deleting all information stored in the
-# login_session only after revoking its token with the Oauth2 providers
 @app.route('/disconnect')
 def disconnect():
+    """
+    Disconnects a user.
+
+    Deletes all information stored in the login_session after revoking its token with the Oauth2 provider.  # noqa
+    """
     # Check if the user is actually connected by the presence of the
     # access token in the login_session
     access_token = login_session.get('access_token')
@@ -362,11 +379,13 @@ def disconnect():
         return redirect(url_for('show_hospitals'))
 
 
-# Show all the hospitals
 @app.route('/')
 @app.route('/hospitals/')
 @app.route('/hospital/')
 def show_hospitals():
+    """
+    Creates webpage showing all hospitals.
+    """
     # Gets all hospitals in the database, ordering alphabetically
     hospitals = session.query(Hospital).order_by(asc(Hospital.name))
 
@@ -379,9 +398,11 @@ def show_hospitals():
         return render_template('hospitals.html', hospitals=hospitals)
 
 
-# Create a new hospital
 @app.route('/hospital/new/', methods=['GET', 'POST'])
 def new_hospital():
+    """
+    Creates webpage with a form to create a new hospital.
+    """
     # Check if the user is logged in and redirects accordingly
     if 'username' not in login_session:
         return redirect('/login')
@@ -402,9 +423,11 @@ def new_hospital():
         return render_template('new_hospital.html')
 
 
-# Edit a hospital
 @app.route('/hospital/<int:hospital_id>/edit/', methods=['GET', 'POST'])
 def edit_hospital(hospital_id):
+    """
+    Creates webpage with a form to edit an existing hospital.
+    """
     # Check if the user is logged in and redirects accordingly
     if 'username' not in login_session:
         return redirect('/login')
@@ -452,9 +475,11 @@ def edit_hospital(hospital_id):
         return render_template('edit_hospital.html', hospital=edited_hospital)
 
 
-# Delete a hospital
 @app.route('/hospital/<int:hospital_id>/delete/', methods=['GET', 'POST'])
 def delete_hospital(hospital_id):
+    """
+    Creates webpage to confirm the deletion of a given hospital.
+    """
     # Check if the user is logged in and redirects accordingly
     if 'username' not in login_session:
         return redirect('/login')
@@ -478,11 +503,13 @@ def delete_hospital(hospital_id):
         return render_template('delete_hospital.html', hospital=hospital_to_delete)  # noqa
 
 
-# Show the list of conditions treated in a given hospital
 @app.route('/hospital/<int:hospital_id>/')
 @app.route('/hospital/<int:hospital_id>/treatments/')
 @app.route('/hospital/<int:hospital_id>/conditions/')
 def show_conditions(hospital_id):
+    """
+    Creates webpage that shows a given hospital page, with all of its conditions.  # noqa
+    """
     # Retrieves the hospital and then, the list of conditions associated
     # with that hospital
     hospital = session.query(Hospital).filter_by(id=hospital_id).one()
@@ -499,9 +526,11 @@ def show_conditions(hospital_id):
         return render_template('conditions.html', conditions=conditions, hospital=hospital, creator=creator)  # noqa
 
 
-# Add a new condition to a given hospital
 @app.route('/hospital/<int:hospital_id>/condition/new/', methods=['GET', 'POST'])  # noqa
 def new_condition(hospital_id):
+    """
+    Creates webpage to create a new condition to a given hospital.
+    """
     # Check if the user is logged in and redirects accordingly
     if 'username' not in login_session:
         return redirect('/login')
@@ -527,9 +556,11 @@ def new_condition(hospital_id):
         return render_template('new_condition.html', hospital_id=hospital_id)
 
 
-# Edit a condition in a given hospital
 @app.route('/hospital/<int:hospital_id>/condition/<int:condition_id>/edit/', methods=['GET', 'POST'])  # noqa
 def edit_condition(hospital_id, condition_id):
+    """
+    Creates webpage to edit a condition from a given hospital.
+    """
     # Check if the user is logged in and redirects accordingly
     if 'username' not in login_session:
         return redirect('/login')
@@ -587,9 +618,11 @@ def edit_condition(hospital_id, condition_id):
         return render_template('edit_condition.html', hospital_id=hospital_id, condition_id=condition_id, condition=edited_condition)  # noqa
 
 
-# Delete a condition in a given hospital
 @app.route('/hospital/<int:hospital_id>/condition/<int:condition_id>/delete/', methods=['GET', 'POST'])  # noqa
 def delete_condition(hospital_id, condition_id):
+    """
+    Creates webpage to confirm the deletion of a condition from a given hospital.  # noqa
+    """
     if 'username' not in login_session:
         return redirect('/login')
 
@@ -614,24 +647,26 @@ def delete_condition(hospital_id, condition_id):
 
 
 # API Endoints returning JSON
-#
-# This first endpoint returns all the data available for all hospitals
-# in the database
+
 @app.route('/hospital/JSON')
 @app.route('/hospitals/JSON')
 def hospitals_JSON():
+    """
+    API Endpoint, retrieves all data available for all hospitals in the database.  # noqa
+    """
     hospitals = session.query(Hospital).all()
 
     return jsonify(hospitals=[hospital.serialize for
                               hospital in hospitals])
 
 
-# This second endpoint returns all conditions available for treatment
-# in one given hospital
 @app.route('/hospital/<int:hospital_id>/JSON')
 @app.route('/hospital/<int:hospital_id>/conditions/JSON')
 @app.route('/hospital/<int:hospital_id>/treatments/JSON')
 def hospital_treatments_JSON(hospital_id):
+    """
+    API Endpoint, retrieves all conditions from a specific hospital, and this given hospital information.  # noqa
+    """
     hospital = session.query(Hospital).filter_by(id=hospital_id).one()
     conditions = session.query(Condition).filter_by(hospital_id=hospital.id).all()  # noqa
 
@@ -640,13 +675,11 @@ def hospital_treatments_JSON(hospital_id):
         Conditions=[condition.serialize for condition in conditions])
 
 
-# This third and final endpoint returns all information available for
-# one given condition, from one given hospital only. This means that,
-# if one or more hospitals treat the same condition, the data on the
-# prices won't be included here - you would have to find them one by
-# one
 @app.route('/hospital/<int:hospital_id>/condition/<int:condition_id>/JSON')
 def condition_JSON(hospital_id, condition_id):
+    """
+    API Endpoint, retrieves the data available on one given condition, from one specific hospital.  # noqa
+    """
     condition = session.query(Condition).filter_by(id=condition_id).one()
 
     return jsonify(condition=condition.serialize)
