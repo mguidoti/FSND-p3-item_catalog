@@ -52,6 +52,8 @@ Assuming that you've the same environment described above:
 
 If you're not in the same environment as described above, I do provide a `requirements.txt` now. Thus, you should be able to run this app if you: `pip install -r requirements.txt`.
 
+**FIRST TIMER ALERT**: As I wasn't sure if I should provide all packages' dependencies or not, I'm also including a `requirements_all.txt`, which is essentially the output of the `pip freeze` command on my Vagrant VM. So, if the first doesn't work, try the second?
+
 
 ### Database
 
