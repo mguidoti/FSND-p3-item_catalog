@@ -570,7 +570,6 @@ def edit_condition(hospital_id, condition_id):
 
         # Check if there was any changes to flash the right message
         if changes:
-            print('why?')
             session.add(edited_condition)
             flash('Condition %s successfully modified!' % edited_condition.name)  # noqa
             session.commit()
