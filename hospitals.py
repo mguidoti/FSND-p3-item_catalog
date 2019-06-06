@@ -319,8 +319,7 @@ def disconnect():
 
             else:
                 # For whatever reason, the given token was invalid
-                flash("Failed to revoke token for your user."
-                      "No idea why. Sorry.")
+                flash("Failed to revoke token for your user. No idea why. Sorry.")  # noqa
 
                 return redirect(url_for('show_hospitals'))
 
