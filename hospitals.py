@@ -419,7 +419,7 @@ def new_hospital():
     if request.method == 'POST':
         # Actually create the new hospital
         # new_hospital = Hospital(name=request.form['name'], user_id=login_session['user_id'], accepted_insurance=request.form['insurance'], address=request.form['address'], phone=request.form['phone'])  # noqa
-        new_hospital = Hospital(name=request.form['name'], user_id="Grader Udacity", accepted_insurance=request.form['insurance'], address=request.form['address'], phone=request.form['phone'])  # noqa
+        new_hospital = Hospital(name=request.form['name'], user_id=1, accepted_insurance=request.form['insurance'], address=request.form['address'], phone=request.form['phone'])  # noqa
 
         # Add to the database and flash a confirmation message
         session.add(new_hospital)
@@ -572,7 +572,7 @@ def new_condition(hospital_id):
     if request.method == 'POST':
         # Actually create the new condition
         # new_condition = Condition(name=request.form['name'], cause=request.form['cause'], sympton=request.form['sympton'], cure=request.form['cure'], cost=request.form['cost'], type=request.form['type'], hospital_id=hospital_id, user_id=login_session['user_id'])  # noqa
-        new_condition = Condition(name=request.form['name'], cause=request.form['cause'], sympton=request.form['sympton'], cure=request.form['cure'], cost=request.form['cost'], type=request.form['type'], hospital_id=hospital_id, user_id="Grader Udacity")  # noqa
+        new_condition = Condition(name=request.form['name'], cause=request.form['cause'], sympton=request.form['sympton'], cure=request.form['cure'], cost=request.form['cost'], type=request.form['type'], hospital_id=hospital_id, user_id=1)  # noqa
 
         session.add(new_condition)
         flash('Condition %s added successfully!' % (new_condition.name))
